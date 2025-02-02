@@ -1,0 +1,123 @@
+Packet Sniffer & Malicious Activity Detector
+
+Overview
+
+This project is a real-time packet sniffer that detects suspicious network activity, including:
+
+Port Scanning (e.g., Nmap scans)
+
+DoS/DDoS Attacks (high-frequency packets from one IP)
+
+Suspicious HTTP Traffic (SQL Injection, XSS attempts)
+
+Raw Packet Analysis for network monitoring
+
+The script uses Python and Scapy to sniff network traffic and logs suspicious activity to suspicious_activity.log.
+
+Features
+
+Real-time Packet Capture
+
+Automatic Malicious Activity Detection
+
+Logging System for Suspicious Activity
+
+Filters HTTP Payloads for SQL Injection & XSS
+
+Detects DoS and Port Scans
+
+Installation & Setup
+
+Prerequisites
+
+Make sure you have:
+
+Python 3.x installed (python --version)
+
+Scapy library (pip install scapy)
+
+Administrator/root privileges (required for sniffing)
+
+Install Dependencies
+
+Run the following:
+
+pip install scapy
+
+Run the Packet Sniffer
+
+sudo python sniffer.py   # Linux/macOS (requires root)
+python sniffer.py        # Windows (Run as Administrator)
+
+Usage
+
+Run the script to start capturing network packets.
+
+Monitor traffic for malicious activities.
+
+Logs all detections to suspicious_activity.log.
+
+Detection Mechanisms
+
+Port Scanning Detection
+
+If an IP scans more than 10 ports in a short time, it gets flagged.
+
+DoS/DDoS Attack Detection
+
+If an IP sends 100+ packets rapidly, it is flagged as a potential DoS attack.
+
+Suspicious HTTP Traffic
+
+If an HTTP request contains SQL Injection or XSS payloads, it is flagged.
+
+Example Logs
+
+2025-02-02 12:00:01 - Potential Port Scan Detected from 192.168.1.50
+2025-02-02 12:05:45 - Potential DoS Attack Detected from 192.168.1.200
+2025-02-02 12:10:30 - Suspicious HTTP Request from 192.168.1.150 -> 192.168.1.100: id=1' OR 1=1 --
+
+Testing the Detection System
+
+Test Port Scanning
+
+Run:
+
+nmap -p 1-1000 192.168.1.100
+
+Expected Output:
+
+Potential Port Scan Detected from 192.168.1.50
+
+Test DoS Attack
+
+Run:
+
+hping3 -S --flood -p 80 192.168.1.100
+
+Expected Output:
+
+Potential DoS Attack Detected from 192.168.1.200
+
+Test Suspicious HTTP Traffic
+
+Run:
+
+curl "http://192.168.1.100/index.php?id=1' OR 1=1 --"
+
+Expected Log:
+
+Suspicious HTTP Request from 192.168.1.150 -> 192.168.1.100: id=1' OR 1=1 --
+
+Future Improvements
+
+Add MITM and ARP spoofing detection
+
+Web Dashboard for Real-time Monitoring
+
+Send Alerts via Email or Discord
+
+Docker Support for Deployment
+
+
+
